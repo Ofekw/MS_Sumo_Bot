@@ -409,8 +409,8 @@ if __name__ == '__main__':
             GPIO.output(35, GPIO.HIGH)
             GPIO.output(37, GPIO.LOW)
             #Inner Left
-            #GPIO.output(38, GPIO.LOW)
-            #GPIO.output(40, GPIO.HIGH)
+            #GPIO.output(38, GPIO.HIGH)
+            #GPIO.output(40, GPIO.LOW)
 
         else:
             print "stop"
@@ -425,8 +425,8 @@ if __name__ == '__main__':
             GPIO.output(31, GPIO.LOW)
             GPIO.output(33, GPIO.HIGH)
             # Inner Right
-            #GPIO.output(32, GPIO.HIGH)
-            #GPIO.output(36, GPIO.LOW)
+            #GPIO.output(32, GPIO.LOW)
+            #GPIO.output(36, GPIO.HIGH)
        
             # Left Wheels
             GPIO.output(35, GPIO.LOW)
@@ -441,10 +441,16 @@ if __name__ == '__main__':
 
 
     def stop():
+        stopRight()
+        stopLeft()
+
+    def stopRight():
         GPIO.output(31, 0)
         GPIO.output(33, 0)
         GPIO.output(32, 0)
         GPIO.output(36, 0)
+
+    def stopLeft():
         GPIO.output(35, 0)
         GPIO.output(37, 0)
         GPIO.output(38, 0)
@@ -452,17 +458,51 @@ if __name__ == '__main__':
         
 
     #specific callbacks for the left thumb (X & Y)
-    def leftThumbX(xValue):
-        print "LX {}".format(xValue)
     def leftThumbY(yValue):
         print "LY {}".format(yValue)
+        if (yValue > 0): # forwards
+            # Left Wheels
+            GPIO.output(35, GPIO.HIGH)
+            GPIO.output(37, GPIO.LOW)
+            # Inner Left
+            GPIO.output(38, GPIO.HIGH)
+            GPIO.output(40, GPIO.LOW)
+        elif (yValue < 0): #backwards
+            # Left Wheels
+            GPIO.output(35, GPIO.LOW)
+            GPIO.output(37, GPIO.HIGH)
+            # Inner Left
+            GPIO.output(38, GPIO.LOW)
+            GPIO.output(40, GPIO.HIGH)
+        else:
+           stopLeft()
+
+        
+    def rightThumbY(yValue):
+        print "RY {}".format(yValue)
+        if (yValue > 0): # forwards
+            # Right Wheels 
+            GPIO.output(31, GPIO.LOW)
+            GPIO.output(33, GPIO.HIGH)
+            # Inner Right
+            GPIO.output(32, GPIO.LOW)
+            GPIO.output(36, GPIO.HIGH)
+        elif (yValue < 0): #backwards
+            # Right Wheels
+            GPIO.output(31, GPIO.HIGH)
+            GPIO.output(33, GPIO.LOW)
+            # Inner Right
+            GPIO.output(32, GPIO.HIGH)
+            GPIO.output(36, GPIO.LOW)
+        else:
+           stopRight()
 
     #setup xbox controller, set out the deadzone and scale, also invert the Y Axis (for some reason in Pygame negative is up - wierd! 
     xboxCont = XboxController(controlCallBack, deadzone = 30, scale = 100, invertYAxis = True)
 
     #setup the left thumb (X & Y) callbacks
-    xboxCont.setupControlCallback(xboxCont.XboxControls.LTHUMBX, leftThumbX)
     xboxCont.setupControlCallback(xboxCont.XboxControls.LTHUMBY, leftThumbY)
+    xboxCont.setupControlCallback(xboxCont.XboxControls.RTHUMBY, rightThumbY)
     
     xboxCont.setupControlCallback(xboxCont.XboxControls.A, pressACallBack)
     xboxCont.setupControlCallback(xboxCont.XboxControls.Y, pressYCallBack)
