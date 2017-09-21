@@ -350,41 +350,97 @@ if __name__ == '__main__':
     #generic call back
     def controlCallBack(xboxControlId, value):
         print "Control Id = {}, Value = {}".format(xboxControlId, value)
-
+    #Go back
     def pressACallBack(value):
         print "A:Value = {}".format(value)
-        # Right Wheels
-        GPIO.output(31, GPIO.HIGH)
-        GPIO.output(33, GPIO.LOW)
-        # Inner Right
-        GPIO.output(32, GPIO.HIGH)
-        GPIO.output(36, GPIO.LOW)
-        
-        # Left Wheels
-        GPIO.output(35, GPIO.LOW)
-        GPIO.output(37, GPIO.HIGH)
-        #Inner Left
-        GPIO.output(38, GPIO.LOW)
-        GPIO.output(40, GPIO.HIGH)
+        if (value == 1):
+            print "go"
+            # Right Wheels
+            GPIO.output(31, GPIO.HIGH)
+            GPIO.output(33, GPIO.LOW)
+            # Inner Right
+            GPIO.output(32, GPIO.HIGH)
+            GPIO.output(36, GPIO.LOW)
+       
+            # Left Wheels
+            GPIO.output(35, GPIO.LOW)
+            GPIO.output(37, GPIO.HIGH)
+            #Inner Left
+            GPIO.output(38, GPIO.LOW)
+            GPIO.output(40, GPIO.HIGH)
 
+        else:
+            print "stop"
+            stop()
+    # Go forwards
     def pressYCallBack(value):
         print "Y: Value = {}".format(value)
-        # Right Wheels
-        GPIO.output(31, GPIO.LOW)
-        GPIO.output(33, GPIO.HIGH)
-        # Inner Right
-        GPIO.output(32, GPIO.LOW)
-        GPIO.output(36, GPIO.HIGH)
-        
-        # Left Wheels
-        GPIO.output(35, GPIO.HIGH)
-        GPIO.output(37, GPIO.LOW)
-        #Inner Left
-        GPIO.output(38, GPIO.HIGH)
-        GPIO.output(40, GPIO.LOW)
+        if (value == 1):
+            # Right Wheels
+            GPIO.output(31, GPIO.LOW)
+            GPIO.output(33, GPIO.HIGH)
+            # Inner Right
+            GPIO.output(32, GPIO.LOW)
+            GPIO.output(36, GPIO.HIGH)
+            
+            # Left Wheels
+            GPIO.output(35, GPIO.HIGH)
+            GPIO.output(37, GPIO.LOW)
+            #Inner Left
+            GPIO.output(38, GPIO.HIGH)
+            GPIO.output(40, GPIO.LOW)
+        else:
+            print "stop"
+            stop()
 
+    #Turn right
     def pressBCallBack(value):
         print "B: Value = {}".format(value)
+        if (value == 1):
+            print "go"
+            # Right Wheels
+            GPIO.output(31, GPIO.HIGH)
+            GPIO.output(33, GPIO.LOW)
+            # Inner Right
+            #GPIO.output(32, GPIO.HIGH)
+            #GPIO.output(36, GPIO.LOW)
+       
+            # Left Wheels
+            GPIO.output(35, GPIO.HIGH)
+            GPIO.output(37, GPIO.LOW)
+            #Inner Left
+            #GPIO.output(38, GPIO.LOW)
+            #GPIO.output(40, GPIO.HIGH)
+
+        else:
+            print "stop"
+            stop()
+
+    #Turn left
+    def pressXCallBack(value):
+        print "x: Value = {}".format(value)
+        if (value == 1):
+            print "go"
+            # Right Wheels
+            GPIO.output(31, GPIO.LOW)
+            GPIO.output(33, GPIO.HIGH)
+            # Inner Right
+            #GPIO.output(32, GPIO.HIGH)
+            #GPIO.output(36, GPIO.LOW)
+       
+            # Left Wheels
+            GPIO.output(35, GPIO.LOW)
+            GPIO.output(37, GPIO.HIGH)
+            #Inner Left
+            #GPIO.output(38, GPIO.LOW)
+            #GPIO.output(40, GPIO.HIGH)
+
+        else:
+            print "stop"
+            stop()
+
+
+    def stop():
         GPIO.output(31, 0)
         GPIO.output(33, 0)
         GPIO.output(32, 0)
@@ -411,6 +467,7 @@ if __name__ == '__main__':
     xboxCont.setupControlCallback(xboxCont.XboxControls.A, pressACallBack)
     xboxCont.setupControlCallback(xboxCont.XboxControls.Y, pressYCallBack)
     xboxCont.setupControlCallback(xboxCont.XboxControls.B, pressBCallBack)
+    xboxCont.setupControlCallback(xboxCont.XboxControls.X, pressXCallBack)
 
     try:
         GPIO.setmode(GPIO.BOARD)
